@@ -1,0 +1,33 @@
+a{
+    font-size: 20px;
+    font-weight: bold;
+}
+
+a #delete{
+   color: red;
+}
+
+.container {
+    text-align: center;
+    margin: 20px;
+}
+
+.container-center {
+    text-align: center;
+}
+
+.container-navigation {
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 10px;
+    border-bottom: 1px solid #666a80;
+    white-space: normal;
+}
+
+input[type="text"], input[type="password"] {
+    width: 200px;
+    height: 30px;
+    font-size: 18px;
+    padding-left: 10px;
+}

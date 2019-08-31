@@ -6,11 +6,36 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="EntityFramework" Version="6.2.0" />
+      <Compile Remove="Migrations\20190904165511_Initial.cs" />
+      <Compile Remove="Migrations\20190904165511_Initial.Designer.cs" />
+      <Compile Remove="Migrations\20190904211524_Initial.cs" />
+      <Compile Remove="Migrations\20190904211524_Initial.Designer.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="BCrypt.Net-Core" Version="1.6.0" />
         <PackageReference Include="Microsoft.AspNetCore.App" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
         <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
         <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.6" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.6" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.2.6" />
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="App_Data" />
+      <Folder Include="Migrations" />
+      <Folder Include="Migrations\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Views\Users\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Users\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Users\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Users\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Users\Index.cshtml" />
     </ItemGroup>
 
 </Project>

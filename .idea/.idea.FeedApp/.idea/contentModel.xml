@@ -1,15 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
+    <e p="C:\Users\every\.Rider2019.2\config\consoles\db" t="IncludeRecursive" />
+    <e p="C:\Users\every\.Rider2019.2\config\extensions" t="IncludeRecursive" />
     <e p="C:\Users\every\.Rider2019.2\system\extResources" t="IncludeRecursive" />
     <e p="C:\Users\every\.Rider2019.2\system\resharper-host\local\Transient\ReSharperHost\v192\SolutionCaches\_FeedApp.-1960869238.00" t="ExcludeRecursive" />
     <e p="E:\Common\CSharp_projects\FeedApp" t="IncludeRecursive">
       <e p=".gitignore" t="Include" />
+      <e p="App_Data" t="Include" />
       <e p="appsettings.Development.json" t="Include" />
       <e p="appsettings.json" t="Include" />
       <e p="bin" t="ExcludeRecursive" />
+      <e p="Controllers" t="Include">
+        <e p="FeedController.cs" t="Include" />
+        <e p="HomeController.cs" t="Include" />
+      </e>
+      <e p="Data" t="Include">
+        <e p="AppDbContext.cs" t="Include" />
+        <e p="Managers" t="Include">
+          <e p="ArticlesManager.cs" t="Include" />
+          <e p="UsersManager.cs" t="Include" />
+        </e>
+        <e p="Models" t="Include">
+          <e p="Article.cs" t="Include" />
+          <e p="BaseModel.cs" t="Include" />
+          <e p="User.cs" t="Include" />
+        </e>
+      </e>
+      <e p="dbsettings.json" t="Include" />
       <e p="FeedApp.csproj" t="IncludeRecursive" />
       <e p="FeedApp.sln" t="IncludeFlat" />
+      <e p="Migrations" t="Include">
+        <e p="20190906213752_CreatedAt.cs" t="Include" />
+        <e p="20190906213752_CreatedAt.Designer.cs" t="Include" />
+        <e p="AppDbContextModelSnapshot.cs" t="Include" />
+      </e>
       <e p="obj" t="ExcludeRecursive">
         <e p="Debug" t="Include">
           <e p="netcoreapp2.2" t="Include">
@@ -23,6 +48,27 @@
         <e p="launchSettings.json" t="Include" />
       </e>
       <e p="Startup.cs" t="Include" />
+      <e p="Views" t="Include">
+        <e p="_ViewImports.cshtml" t="Include" />
+        <e p="_VIewStart.cshtml" t="Include" />
+        <e p="Feed" t="Include">
+          <e p="Edit.cshtml" t="Include" />
+          <e p="Edit.cshtml.cs" t="Include" />
+          <e p="Feed.cshtml" t="Include" />
+        </e>
+        <e p="Home" t="Include">
+          <e p="Index.cshtml" t="Include" />
+          <e p="Register.cshtml" t="Include" />
+        </e>
+        <e p="Shared" t="Include">
+          <e p="_Layout.cshtml" t="Include" />
+        </e>
+      </e>
+      <e p="wwwroot" t="Include">
+        <e p="css" t="Include">
+          <e p="style.css" t="Include" />
+        </e>
+      </e>
     </e>
   </component>
 </project>

@@ -1,0 +1,19 @@
+@model User
+@{
+    ViewBag.Title = "Регистрация нового пользователя";
+}
+<form asp-action="Register" asp-controller="Home">
+    <div class="container">
+        <input type="text" asp-for="PublicName" placeholder="Публичное имя"/>
+    </div>
+    <div class="container">
+        <input type="text" asp-for="Login" placeholder="Логин"/>
+    </div>
+    <div class="container">
+        <input type="text" asp-for="Password" placeholder="Пароль"/>
+    </div>
+
+    <div class="container">
+        <input type="submit" value="Зарегистрироваться"/>
+    </div>
+</form>

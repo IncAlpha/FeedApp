@@ -1,0 +1,5 @@
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=127.0.0.1;Database=feedapp;User Id=incalpha;Password=qwerty123;"
+  }
+}

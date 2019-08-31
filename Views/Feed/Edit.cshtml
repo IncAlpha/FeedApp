@@ -1,0 +1,20 @@
+@model Article
+@{
+    ViewBag.Title = Model.Id == Guid.Empty ? "Создание статьи" : "Редактирование статьи";
+    var action = Model.Id == Guid.Empty ? "Create" : "Edit";
+    var buttonLabel = Model.Id == Guid.Empty ? "Создать" : "Сохранить";
+}
+
+<form asp-action="@action" asp-controller="Feed">
+    <input type="text" asp-for="AuthorId" hidden="hidden" placeholder="Название"/>
+    <div class="container">
+        <input type="text" asp-for="Title" maxlength="100" placeholder="Название"/>
+    </div>
+
+    <div class="container">
+        <textarea asp-for="Content" maxlength="5000" placeholder="Содержание"></textarea>
+    </div>
+    <div class="container">
+        <input type="submit" value="@buttonLabel"/>
+    </div>
+</form>
