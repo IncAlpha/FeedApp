@@ -3,8 +3,11 @@ a{
     font-weight: bold;
 }
 
-a #delete{
-   color: red;
+.error {
+    font-size: 12px;
+    color: #c7001a;
+    font-weight: bold;
+    margin: 5px;
 }
 
 .container {
@@ -23,6 +26,19 @@ a #delete{
     padding: 10px;
     border-bottom: 1px solid #666a80;
     white-space: normal;
+}
+
+.navigation-home{
+    color: rgb(50, 50, 50);
+    text-decoration: none;
+    font-size: 25px;
+    margin-right: 250px;
+}
+
+.logout{
+    font-size: 14px;
+    color: rgb(50, 50, 50);
+    margin-left: 10px;
 }
 
 input[type="text"], input[type="password"] {

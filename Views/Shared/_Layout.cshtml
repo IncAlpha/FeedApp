@@ -4,7 +4,7 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-    <title>@ViewData["Title"]</title>
+    <title>@ViewBag.Title</title>
 
     <link rel="stylesheet" href="~/css/style.css"/>
 </head>
@@ -13,6 +13,20 @@
 <header>
     <div class="container-navigation">
         <a class="navigation-home" asp-controller="Home" asp-action="Index">FeedApp</a>
+
+        @{
+            if (User.Identity.IsAuthenticated)
+            {
+                <a class="link">@User.Identity.Name</a>
+                <a class="logout" asp-controller="Account" asp-action="Logout">Выйти</a>
+            }
+            else
+            {
+                <a class="link" asp-controller="Account" asp-action="Login">Войти</a>
+                <a class="link" asp-controller="Account" asp-action="Registration">Регистрация</a>
+            }
+        }
+
     </div>
 </header>
 

@@ -6,15 +6,22 @@ namespace FeedApp.Data.Models
     {
         [StringLength(50)] public string PublicName { get; set; }
 
-        [MinLength(6)] public string Login { get; set; }
+        public string Login { get; set; }
 
-        [MinLength(6)] public string Password { get; set; }
+        public string Password { get; set; }
 
         public User() : base()
         {
             PublicName = string.Empty;
             Login = string.Empty;
             Password = string.Empty;
+        }
+
+        public User(string publicName, string login, string password) : this()
+        {
+            PublicName = publicName;
+            Login = login;
+            Password = password;
         }
     }
 }

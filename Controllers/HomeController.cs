@@ -1,11 +1,10 @@
-using System.Linq;
-using System.Threading.Tasks;
 using FeedApp.Data;
-using FeedApp.Data.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FeedApp.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private AppDbContext _database;
@@ -20,6 +19,7 @@ namespace FeedApp.Controllers
             return View();
         }
 
+        /*
         public IActionResult Register()
         {
             return View();
@@ -38,6 +38,6 @@ namespace FeedApp.Controllers
             await _database.SaveChangesAsync();
 
             return RedirectToAction("Index");
-        }
+        }*/
     }
 }

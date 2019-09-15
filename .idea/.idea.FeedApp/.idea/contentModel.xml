@@ -12,6 +12,7 @@
       <e p="appsettings.json" t="Include" />
       <e p="bin" t="ExcludeRecursive" />
       <e p="Controllers" t="Include">
+        <e p="AccountController.cs" t="Include" />
         <e p="FeedController.cs" t="Include" />
         <e p="HomeController.cs" t="Include" />
       </e>
@@ -33,6 +34,8 @@
       <e p="Migrations" t="Include">
         <e p="20190906213752_CreatedAt.cs" t="Include" />
         <e p="20190906213752_CreatedAt.Designer.cs" t="Include" />
+        <e p="20190913183906_AuthCreation.cs" t="Include" />
+        <e p="20190913183906_AuthCreation.Designer.cs" t="Include" />
         <e p="AppDbContextModelSnapshot.cs" t="Include" />
       </e>
       <e p="obj" t="ExcludeRecursive">
@@ -48,9 +51,21 @@
         <e p="launchSettings.json" t="Include" />
       </e>
       <e p="Startup.cs" t="Include" />
+      <e p="UI" t="Include">
+        <e p="ViewModels" t="Include">
+          <e p="LoginModel.cs" t="Include" />
+          <e p="RegistrationModel.cs" t="Include" />
+        </e>
+      </e>
       <e p="Views" t="Include">
         <e p="_ViewImports.cshtml" t="Include" />
         <e p="_VIewStart.cshtml" t="Include" />
+        <e p="Account" t="Include">
+          <e p="Login.cshtml" t="Include" />
+          <e p="Login.cshtml.cs" t="Include" />
+          <e p="Registration.cshtml" t="Include" />
+          <e p="Registration.cshtml.cs" t="Include" />
+        </e>
         <e p="Feed" t="Include">
           <e p="Edit.cshtml" t="Include" />
           <e p="Edit.cshtml.cs" t="Include" />
@@ -58,7 +73,6 @@
         </e>
         <e p="Home" t="Include">
           <e p="Index.cshtml" t="Include" />
-          <e p="Register.cshtml" t="Include" />
         </e>
         <e p="Shared" t="Include">
           <e p="_Layout.cshtml" t="Include" />

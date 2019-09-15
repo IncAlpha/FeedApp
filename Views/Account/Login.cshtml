@@ -1,0 +1,30 @@
+@model LoginModel
+
+@{
+    ViewBag.Title = "Вход на сайт";
+}
+
+<div class="container">
+    <form asp-action="Login" asp-controller="Account" asp-anti-forgery="true">
+        <div class="validation" asp-validation-summary="ModelOnly"></div>
+        <div class="container">
+            <input asp-for="Login" type="text" placeholder="Логин"/>
+            <br/>
+            <span class="error" asp-validation-for="Login"></span>
+        </div>
+
+        <div class="container">
+            <input asp-for="Password" type="password" placeholder="Пароль"/>
+            <br/>
+            <span class="error" asp-validation-for="Password"></span>
+        </div>
+
+        <div class="container">
+            <input type="submit" value="Войти"/>
+        </div>
+    </form>
+
+    <div class="container">
+        <a class="link" asp-controller="Account" asp-action="Registration">Регистрация</a>
+    </div>
+</div>

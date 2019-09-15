@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using FeedApp.Data;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -12,30 +13,39 @@ namespace FeedApp
 {
     public class Startup
     {
-        private IConfigurationRoot _dbConfiguration;
+        private IConfiguration _configuration;
 
         private const string DefaultConnection = "DefaultConnection";
 
         public Startup(IHostingEnvironment environment)
         {
-            _dbConfiguration = new ConfigurationBuilder().SetBasePath(environment.ContentRootPath).AddJsonFile("dbsettings.json").Build();
+            _configuration = new ConfigurationBuilder().SetBasePath(environment.ContentRootPath).AddJsonFile("dbsettings.json").Build();
         }
         
         public void ConfigureServices(IServiceCollection services)
         {
-            var connection = _dbConfiguration.GetConnectionString(DefaultConnection);
+            var connection = _configuration.GetConnectionString(DefaultConnection);
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connection));
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            services.AddAuthorization();
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = new PathString("/Account/Login");
+                    options.LogoutPath = new PathString("/Account/Logout");
+                });
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseAuthentication();
+            app.UseHttpsRedirection();
             app.UseDeveloperExceptionPage();
             app.UseStatusCodePages();
             app.UseStaticFiles();
             app.UseMvcWithDefaultRoute();
+            
             app.Run(Start);
         }
 
