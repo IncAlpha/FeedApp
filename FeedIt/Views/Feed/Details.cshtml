@@ -1,7 +1,6 @@
 @model ArticleDetailsViewModel
 @{
     ViewData["Title"] = "Статья";
-    var userName = Model.Author.PublicName;
 }
 
 <div class="container w-75">
@@ -12,9 +11,9 @@
             </h3>
             <hr/>
             <a
-                asp-controller="Account" asp-action="Details" asp-route-login="@userName"
+                asp-controller="Account" asp-action="Details" asp-route-login="@Model.Author.Login"
                 class="text-dark text-monospace">
-                @userName
+                @Model.Author.PublicName
             </a>
             <p class="text-justify article-content">@Model.Article.Content</p>
         </div>

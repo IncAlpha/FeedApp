@@ -36,8 +36,17 @@
 
             @if (User.Identity.IsAuthenticated)
             {
+                var userLogin = User.FindFirst(user => user.Type == "Login").Value;
                 <div class="align-content-end">
-                    @User.FindFirst(user => user.Type == "Login").Value, <a class="alert-link" asp-action="Logout" asp-controller="Account">выйти</a>.
+                    <a
+                        asp-action="Details" asp-controller="Account" asp-route-login="@userLogin"
+                        class="navbar-brand">
+                        @userLogin</a>
+                    <a
+                        asp-action="Logout" asp-controller="Account"
+                        class="alert-link">
+                        выйти
+                    </a>
                 </div>
             }
         </div>
