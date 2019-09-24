@@ -1,0 +1,48 @@
+﻿@model HomeFeedViewModel
+@{
+    ViewData["Title"] = "Главная";
+}
+
+
+<div class="container text-center">
+    <h3 class="text-uppercase">ваша лента</h3>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        @if (!Model.Articles.Any())
+        {
+            <h6 class="text-muted text-uppercase">статей пока нет</h6>
+        }
+
+        @foreach (var article in Model.Articles)
+        {
+            <div class="container text=;eft mb-4">
+                <a
+                    asp-controller="Feed" asp-action="Details" asp-route-id="@article.Id"
+                    class="list-group-item list-group-item-action flex-column align-items-start">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">@article.Title</h5>
+                        <div>
+                            <small class="text-muted">@article.CreatedAt</small>
+                            <br/>
+                            @if (!article.IsPublic)
+                            {
+                                <div class="text-right">
+                                    <small class="text-muted">приватная</small>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <p class="mb-1 article-preview">@article.Content</p>
+
+                    @{
+                        var userName = await Model.UsersRepository.GetUserPublicName(article.AuthorId);
+                    }
+                    <small class="text-muted">@userName</small>
+                </a>
+            </div>
+        }
+    </div>
+</div>

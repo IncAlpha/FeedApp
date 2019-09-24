@@ -1,0 +1,61 @@
+@model MyFeedViewModel
+@{
+    ViewData["Title"] = "Мои статьи";
+    var userName = User.FindFirst(user => user.Type == "PublicName").Value;
+}
+
+<div class="list-group">
+    @{
+        <div class="text-center mb-3">
+            <a
+                asp-controller="Feed" asp-action="Edit"
+                type="button" class="btn btn-light btn-lg w-25">
+                Создать
+            </a>
+        </div>
+
+        foreach (var article in Model.Articles)
+        {
+            <div class="container mb-4">
+                <div class="row">
+                    <div class="col-11">
+                        <a
+                            asp-controller="Feed" asp-action="Details" asp-route-id="@article.Id"
+                            class="list-group-item list-group-item-action flex-column align-items-start">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">@article.Title</h5>
+                                <div>
+                                    <small class="text-muted">@article.CreatedAt</small>
+                                    <br/>
+                                    @if (!article.IsPublic)
+                                    {
+                                        <div class="text-right">
+                                            <small class="text-muted">приватная</small>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+
+                            <p class="mb-1 article-preview">@article.Content</p>
+
+                            <small class="text-muted">@userName</small>
+                        </a>
+                    </div>
+
+                    <div class="col-1 pl-0 pt-1">
+                        <a
+                            asp-controller="Feed" asp-action="Edit" asp-route-id="@article.Id"
+                            class="text-center btn btn-primary btn-sm mb-2">
+                            Изменить
+                        </a>
+                        <a
+                            asp-controller="Feed" asp-action="Delete" asp-route-id="@article.Id"
+                            class="text-center btn btn-danger btn-sm">
+                            Удалить
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>

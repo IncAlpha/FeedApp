@@ -1,0 +1,46 @@
+@model EditArticleViewModel
+@{
+    ViewData["Title"] = Model.IsNew ? "Создание статьи" : "Редактирование статьи";
+    var buttonLabel = Model.IsNew ? "Создать" : "Сохранить";
+}
+
+<div class="text-center container w-75">
+    <form asp-controller="Feed" asp-action="Save" asp-route-id="@Model.ArticleId">
+        <div class="mt-4">
+            <div
+                asp-validation-summary="ModelOnly"
+                class="validation text-danger">
+            </div>
+
+            <div class="form-group">
+                <span
+                    asp-validation-for="Title"
+                    class="text-danger">
+                </span>
+                <input
+                    type="text"
+                    class="form-control form-control-lg mb-lg-4" asp-for="Title" placeholder="Заголовок статьи">
+
+                <span
+                    asp-validation-for="Content"
+                    class="text-danger">
+                </span>
+                <textarea 
+                    asp-for="Content" 
+                    class="form-control form-control-lg" rows="15" placeholder="Содержание">
+                </textarea>
+            </div>
+        </div>
+
+        <div class="form-check card-body">
+            <input
+                asp-for="IsPublic"
+                class="form-check-input" type="checkbox" id="gridCheck">
+            <label class="form-check-label" for="gridCheck">
+                публичная
+            </label>
+        </div>
+
+        <input type="submit" class="btn btn-success" value="@buttonLabel"/>
+    </form>
+</div>
