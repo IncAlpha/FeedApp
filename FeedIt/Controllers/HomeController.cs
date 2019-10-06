@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using FeedIt.Data.Models;
 using FeedIt.Data.Repositories;
 using FeedIt.UI.ViewModels;
 using FeedIt.UI.ViewModels.Home;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace FeedIt.Controllers
 {
@@ -19,23 +21,14 @@ namespace FeedIt.Controllers
         {
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var articles = new List<Article>();
-
-            var currentUserId = Guid.Parse(GetCurrentUserId());
-            var subscriptions = _subscriptionsRepository.GetSubscriptions(currentUserId);
-            
-            foreach (var subscription in subscriptions)
-            {
-                var result = _articlesRepository.GetByUser(subscription.SubscriptionTargetId.ToString());
-                articles.AddRange(result);
-            }
+            var currentUserId = GetCurrentUserId();
+            var articles = await _articlesRepository.GetAllFeed(currentUserId).ToListAsync();
 
             var model = new HomeFeedViewModel
             {
-                Articles = articles.OrderBy(article => article.CreatedAt),
-                UsersRepository = _usersRepository
+                Articles = articles,
             };
             return View(model);
         }

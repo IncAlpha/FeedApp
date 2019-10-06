@@ -15,11 +15,10 @@
           <e p="BaseController.cs" t="Include" />
           <e p="FeedController.cs" t="Include" />
           <e p="HomeController.cs" t="Include" />
+          <e p="SubscriptionsController.cs" t="Include" />
         </e>
         <e p="Data" t="Include">
-          <e p="Context" t="Include">
-            <e p="AppDbContext.cs" t="Include" />
-          </e>
+          <e p="AppDbContext.cs" t="Include" />
           <e p="Interfaces" t="Include">
             <e p="ICreateTrackable.cs" t="Include" />
           </e>
@@ -37,6 +36,11 @@
           </e>
         </e>
         <e p="FeedIt.csproj" t="IncludeRecursive" />
+        <e p="Migrations" t="Include">
+          <e p="20191005142758_Init.cs" t="Include" />
+          <e p="20191005142758_Init.Designer.cs" t="Include" />
+          <e p="AppDbContextModelSnapshot.cs" t="Include" />
+        </e>
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">
             <e p="netcoreapp2.2" t="Include">
@@ -60,10 +64,13 @@
             <e p="Feed" t="Include">
               <e p="ArticleDetailsViewModel.cs" t="Include" />
               <e p="EditArticleViewModel.cs" t="Include" />
-              <e p="MyFeedViewModel.cs" t="Include" />
+              <e p="MyArticlesViewModel.cs" t="Include" />
             </e>
             <e p="Home" t="Include">
               <e p="HomeFeedViewModel.cs" t="Include" />
+            </e>
+            <e p="Subscriptions" t="Include">
+              <e p="MySubscriptionsViewModel.cs" t="Include" />
             </e>
           </e>
         </e>
@@ -72,17 +79,13 @@
           <e p="_ViewStart.cshtml" t="Include" />
           <e p="Account" t="Include">
             <e p="Details.cshtml" t="Include" />
-            <e p="Details.cshtml.cs" t="Include" />
             <e p="Login.cshtml" t="Include" />
-            <e p="Login.cshtml.cs" t="Include" />
             <e p="Register.cshtml" t="Include" />
-            <e p="Register.cshtml.cs" t="Include" />
           </e>
           <e p="Feed" t="Include">
             <e p="Details.cshtml" t="Include" />
             <e p="Edit.cshtml" t="Include" />
-            <e p="MyFeed.cshtml" t="Include" />
-            <e p="MyFeed.cshtml.cs" t="Include" />
+            <e p="MyArticles.cshtml" t="Include" />
           </e>
           <e p="Home" t="Include">
             <e p="Index.cshtml" t="Include" />
@@ -92,6 +95,9 @@
             <e p="_Layout.cshtml" t="Include" />
             <e p="_ValidationScriptsPartial.cshtml" t="Include" />
             <e p="Error.cshtml" t="Include" />
+          </e>
+          <e p="Subscriptions" t="Include">
+            <e p="MySubscriptions.cshtml" t="Include" />
           </e>
         </e>
         <e p="wwwroot" t="Include">

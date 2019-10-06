@@ -1,9 +1,10 @@
+using System;
 using FeedIt.Data.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FeedIt.Controllers
 {
-    public class BaseController : Controller
+    public abstract class BaseController : Controller
     {
         protected readonly ArticlesRepository _articlesRepository;
         protected readonly SubscriptionsRepository _subscriptionsRepository;
@@ -16,9 +17,9 @@ namespace FeedIt.Controllers
             _usersRepository = usersRepository;
         }
         
-        protected string GetCurrentUserId()
+        protected Guid GetCurrentUserId()
         {
-            return User.FindFirst(entry => entry.Type == "UserId").Value;
+            return Guid.Parse(User.FindFirst(entry => entry.Type == "UserId").Value);
         }
     }
 }

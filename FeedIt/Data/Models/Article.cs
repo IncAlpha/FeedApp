@@ -9,8 +9,8 @@ namespace FeedIt.Data.Models
     {
         [StringLength(75)] public string Title { get; set; }
         [StringLength(1500)] public string Content { get; set; }
-        public string AuthorIdRaw { get; set; }
-        [NotMapped] public Guid AuthorId => Guid.Parse(AuthorIdRaw);
+        public Guid AuthorId { get; set; }
+        public User Author { get; set; }
         public bool IsPublic { get; set; }
 
         public DateTime CreatedAt { get; set; }

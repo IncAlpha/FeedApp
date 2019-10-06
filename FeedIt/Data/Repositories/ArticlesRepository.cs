@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using FeedIt.Data.Context;
+using System.Threading.Tasks;
 using FeedIt.Data.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace FeedIt.Data.Repositories
 {
@@ -14,14 +16,43 @@ namespace FeedIt.Data.Repositories
         {
         }
         
-        public IEnumerable<Article> GetByOwner(string id)
+        public Task<Article> GetByIdIncludeAuthor(Guid id)
         {
-            return DbSet.Where(article => article.AuthorIdRaw == id).AsEnumerable();
+            return DbSet
+                .Where(article => article.Id == id)
+                .Include(article => article.Author)
+                .FirstOrDefaultAsync();
         }
 
-        public IEnumerable<Article> GetByUser(string id)
+        public IIncludableQueryable<Article, User> GetByUser(Guid id)
         {
-            return DbSet.Where(article => article.AuthorIdRaw == id && article.IsPublic).AsEnumerable();
+            return DbSet
+                .Where(article => article.AuthorId == id && article.IsPublic)
+                .Include(article => article.Author);
+        }
+
+        public IIncludableQueryable<Article, User> GetByOwner(Guid id)
+        {
+            return DbSet
+                .Where(article => article.AuthorId == id)
+                .Include(article => article.Author);
+        }
+
+        /// <summary>
+        /// Get all articles from all subscriptions from user.
+        /// </summary>
+        /// <param name="userId">Target user.</param>
+        /// <returns>List with articles.</returns>
+        public IQueryable<Article> GetAllFeed(Guid userId)
+        {
+            return Context.Users
+                .Where(user => user.Id == userId)
+                .SelectMany(user => user.Subscriptions)
+                .Select(sub => sub.SubscriptionTarget)
+                .SelectMany(user => user.Articles)
+                .Where(article => article.IsPublic)
+                .Include(article => article.Author)
+                .OrderByDescending(article => article.CreatedAt);
         }
     }
 }

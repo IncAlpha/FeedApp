@@ -1,5 +1,5 @@
 ﻿using System.Security.Claims;
-using FeedIt.Data.Context;
+using FeedIt.Data;
 using FeedIt.Data.Models;
 using FeedIt.Data.Repositories;
 using Microsoft.AspNetCore.Authentication.Cookies;

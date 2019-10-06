@@ -3,11 +3,11 @@ using FeedIt.Data.Models;
 
 namespace FeedIt.UI.ViewModels.Feed
 {
-    public class MyFeedViewModel
+    public class MyArticlesViewModel
     {
-        public IEnumerable<Article> Articles;
+        public readonly IEnumerable<Article> Articles;
 
-        public MyFeedViewModel(IEnumerable<Article> articles)
+        public MyArticlesViewModel(IEnumerable<Article> articles)
         {
             Articles = articles;
         }

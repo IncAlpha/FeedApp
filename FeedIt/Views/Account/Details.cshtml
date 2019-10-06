@@ -16,7 +16,7 @@
                         @if (Model.IsSubscribed)
                         {
                             <a
-                                asp-controller="Account" asp-action="Unsubscribe" asp-route-subscriptionLogin="@Model.Login"
+                                asp-controller="Subscriptions" asp-action="Unsubscribe" asp-route-subscriptionLogin="@Model.Login"
                                 class="text-center btn btn-outline-secondary btn-lg">
                                 Отписаться
                             </a>
@@ -24,7 +24,7 @@
                         else
                         {
                             <a
-                                asp-controller="Account" asp-action="Subscribe" asp-route-subscriptionLogin="@Model.Login"
+                                asp-controller="Subscriptions" asp-action="Subscribe" asp-route-subscriptionLogin="@Model.Login"
                                 class="text-center btn btn-primary btn-lg">
                                 Подписаться
                             </a>

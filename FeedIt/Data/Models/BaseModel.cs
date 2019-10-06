@@ -4,16 +4,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FeedIt.Data.Models
 {
-    public class BaseModel
+    public abstract class BaseModel
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity), Key]
         public Guid Id { get; set; }
-
-        [NotMapped] public bool IsExist;
-
-        public BaseModel()
-        {
-            IsExist = false;
-        }
     }
 }

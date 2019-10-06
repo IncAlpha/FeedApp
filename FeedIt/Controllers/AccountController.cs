@@ -1,13 +1,10 @@
-using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using FeedIt.Data.Context;
 using FeedIt.Data.Models;
 using FeedIt.Data.Repositories;
-using FeedIt.UI.ViewModels;
 using FeedIt.UI.ViewModels.Account;
-using FeedIt.UI.ViewModels.Feed;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -121,64 +118,31 @@ namespace FeedIt.Controllers
             if (!await _usersRepository.IsExist(login))
                 return NotFound();
 
-            var user = await _usersRepository.GetByLogin(login);
-            var id = user.Id.ToString();
+            var targetUser = await _usersRepository.GetByLogin(login);
 
-            var currentUserId = Guid.Parse(GetCurrentUserId());
+            var currentUserId = GetCurrentUserId();
 
-            var articles = _articlesRepository.GetByUser(id);
+            var articles = await _articlesRepository.GetByUser(targetUser.Id)
+                .OrderByDescending(article => article.CreatedAt)
+                .ToListAsync();
 
-            var isOwner = GetCurrentUserId() == user.Id.ToString();
+            var isOwner = currentUserId == targetUser.Id;
 
             var isSubscribed = false;
             if (!isOwner)
-                isSubscribed = _subscriptionsRepository.IsUserSubscribed(currentUserId, user.Id);
+                isSubscribed = await _subscriptionsRepository.IsUserSubscribed(currentUserId, targetUser.Id);
 
             var model = new UserDetailsViewModel
             {
-                PublicName = user.PublicName,
-                UserId = id,
+                PublicName = targetUser.PublicName,
+                UserId = targetUser.Id,
                 Articles = articles,
-                Login = user.Login,
+                Login = targetUser.Login,
                 IsOwner = isOwner,
                 IsSubscribed = isSubscribed,
             };
 
             return View(model);
-        }
-
-        [Authorize]
-        public async Task<IActionResult> Subscribe(string subscriptionLogin)
-        {
-            if (!await _usersRepository.IsExist(subscriptionLogin))
-                return NotFound();
-
-            var userId = Guid.Parse(GetCurrentUserId());
-
-            var subscription = await _usersRepository.GetByLogin(subscriptionLogin);
-
-            var subscriptionId = subscription.Id;
-
-            await _subscriptionsRepository.Subscribe(userId, subscriptionId);
-
-            return RedirectToAction("Details", "Account", new { login = subscriptionLogin });
-        }
-
-        [Authorize]
-        public async Task<IActionResult> Unsubscribe(string subscriptionLogin)
-        {
-            if (!await _usersRepository.IsExist(subscriptionLogin))
-                return NotFound();
-
-            var userId = Guid.Parse(GetCurrentUserId());
-
-            var subscription = await _usersRepository.GetByLogin(subscriptionLogin);
-
-            var subscriptionId = subscription.Id;
-
-            await _subscriptionsRepository.Unsubscribe(userId, subscriptionId);
-
-            return RedirectToAction("Details", "Account", new { login = subscriptionLogin });
         }
     }
 }

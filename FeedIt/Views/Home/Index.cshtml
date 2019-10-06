@@ -37,10 +37,7 @@
 
                     <p class="mb-1 article-preview">@article.Content</p>
 
-                    @{
-                        var userName = await Model.UsersRepository.GetUserPublicName(article.AuthorId);
-                    }
-                    <small class="text-muted">@userName</small>
+                    <small class="text-muted">@article.Author.PublicName</small>
                 </a>
             </div>
         }

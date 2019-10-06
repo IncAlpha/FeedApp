@@ -5,7 +5,7 @@
 }
 
 <div class="text-center container w-75">
-    <form asp-controller="Feed" asp-action="Save" asp-route-id="@Model.ArticleId">
+    <form asp-controller="Feed" asp-action="Save" asp-route-id="@Model.ArticleId" asp-route-backUrl="@Model.BackUrl">
         <div class="mt-4">
             <div
                 asp-validation-summary="ModelOnly"

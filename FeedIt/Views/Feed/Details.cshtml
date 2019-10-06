@@ -11,9 +11,9 @@
             </h3>
             <hr/>
             <a
-                asp-controller="Account" asp-action="Details" asp-route-login="@Model.Author.Login"
+                asp-controller="Account" asp-action="Details" asp-route-login="@Model.Article.Author.Login"
                 class="text-dark text-monospace">
-                @Model.Author.PublicName
+                @Model.Article.Author.PublicName
             </a>
             <p class="text-justify article-content">@Model.Article.Content</p>
         </div>

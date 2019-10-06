@@ -7,7 +7,5 @@ namespace FeedIt.UI.ViewModels.Home
     public class HomeFeedViewModel
     {
         public IEnumerable<Article> Articles { get; set; }
-
-        public UsersRepository UsersRepository { get; set; }
     }
 }

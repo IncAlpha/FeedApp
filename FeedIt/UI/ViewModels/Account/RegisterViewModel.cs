@@ -1,19 +1,22 @@
 using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json.Serialization;
 
 namespace FeedIt.UI.ViewModels.Account
 {
     public class RegisterViewModel
     {
         [Required(ErrorMessage = "Требуется указать никнейм.")]
-        [StringLength(50)]
+        [MaxLength(50, ErrorMessage = "Не больше 50 символов.")]
         public string PublicName { get; set; }
         
         [Required(ErrorMessage = "Требуется указать логин.")]
-        [StringLength(20)]
+        [MaxLength(50, ErrorMessage = "Не больше 50 символов.")]
+        [MinLength(6, ErrorMessage = "не меньше 6 символов")]
         public string Login { get; set; }
         
         [Required(ErrorMessage = "Требуется указать пароль.")]
         [DataType(DataType.Password)]
+        [MinLength(6,ErrorMessage = "Минимум 6 символов")]
         public string Password { get; set; }
         
         [Required(ErrorMessage = "Подтвердите пароль.")]

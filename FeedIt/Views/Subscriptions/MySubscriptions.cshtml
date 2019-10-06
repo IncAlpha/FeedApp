@@ -1,0 +1,22 @@
+@model MySubscriptionsViewModel
+@{
+    ViewData["Title"] = "Мои подписки";
+}
+
+<div class="container">
+    @foreach (var sub in Model.Subscriptions)
+    {
+        <div class="container text=;eft mb-4">
+            <a
+                asp-controller="Account" asp-action="Details" asp-route-login="@sub.SubscriptionTarget.Login"
+                class="list-group-item list-group-item-action flex-column align-items-start">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">@sub.SubscriptionTarget.PublicName</h5>
+                    <div>
+                        <small class="text-muted">@sub.SubscriptionTarget.Login</small>
+                    </div>
+                </div>
+            </a>
+        </div>
+    }
+</div>

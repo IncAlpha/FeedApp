@@ -1,11 +1,12 @@
 using System;
-using System.Net;
+using System.Linq;
 using System.Threading.Tasks;
 using FeedIt.Data.Models;
 using FeedIt.Data.Repositories;
 using FeedIt.UI.ViewModels.Feed;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace FeedIt.Controllers
 {
@@ -17,11 +18,12 @@ namespace FeedIt.Controllers
         {
         }
 
-        public IActionResult MyFeed()
+        public async Task<IActionResult> MyArticles()
         {
-            var userId = GetCurrentUserId();
-            var articles = _articlesRepository.GetByOwner(userId);
-            var model = new MyFeedViewModel(articles);
+            var articles = await _articlesRepository.GetByOwner(GetCurrentUserId())
+                .OrderByDescending(article => article.CreatedAt)
+                .ToListAsync();
+            var model = new MyArticlesViewModel(articles);
             return View(model);
         }
 
@@ -31,22 +33,19 @@ namespace FeedIt.Controllers
                 return NotFound();
 
 
-            var article = await _articlesRepository.Get(id);
+            var article = await _articlesRepository.GetByIdIncludeAuthor(id);
 
             var userId = GetCurrentUserId();
 
-            var isOwner = article.AuthorIdRaw == userId;
+            var isOwner = article.AuthorId == userId;
 
             //dont show article if user is not article owner and article is private
             if (!article.IsPublic && !isOwner)
                 return NotFound();
 
-            var author = await _usersRepository.Get(article.AuthorIdRaw);
-
             var model = new ArticleDetailsViewModel
             {
                 Article = article,
-                Author = author,
                 IsOwner = isOwner
             };
 
@@ -65,10 +64,10 @@ namespace FeedIt.Controllers
             if (id.HasValue)
             {
                 var userId = GetCurrentUserId();
-                article = await _articlesRepository.Get(id.Value);
+                article = await _articlesRepository.GetById(id.Value);
 
                 //if it is not user own article
-                if (article.AuthorIdRaw != userId)
+                if (article.AuthorId != userId)
                     return NotFound();
 
                 model.IsNew = false;
@@ -78,12 +77,14 @@ namespace FeedIt.Controllers
             }
 
             model.ArticleId = article.Id.ToString();
+            var referer = Request.Headers["Referer"].ToString();
+            model.BackUrl = referer;
 
             return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Save(EditArticleViewModel viewModel, Guid id)
+        public async Task<IActionResult> Save(EditArticleViewModel viewModel, Guid id, string backUrl)
         {
             if (ModelState.IsValid)
             {
@@ -92,12 +93,12 @@ namespace FeedIt.Controllers
                 var article = new Article
                 {
                     Id = id,
-                    AuthorIdRaw = userId
+                    AuthorId = userId
                 };
 
                 if (await _articlesRepository.IsExist(id))
                 {
-                    article = await _articlesRepository.Get(id);
+                    article = await _articlesRepository.GetById(id);
                 }
 
                 article.Title = viewModel.Title.Trim();
@@ -105,7 +106,7 @@ namespace FeedIt.Controllers
                 article.IsPublic = viewModel.IsPublic;
 
                 await _articlesRepository.Save(article);
-                return RedirectToAction("MyFeed", "Feed");
+                return Redirect(backUrl);
             }
 
             return View("Edit", viewModel);
@@ -115,9 +116,13 @@ namespace FeedIt.Controllers
         {
             if (!id.HasValue) return NotFound();
 
-            await _articlesRepository.Delete(id.Value);
+            var article = await _articlesRepository.GetById(id.Value);
+            
+            if (GetCurrentUserId() != article.AuthorId) return NotFound();
 
-            return RedirectToAction("MyFeed", "Feed");
+            await _articlesRepository.Delete(article);
+
+            return RedirectToAction("MyArticles", "Feed");
         }
     }
 }

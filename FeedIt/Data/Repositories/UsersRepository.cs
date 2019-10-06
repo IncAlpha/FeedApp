@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using FeedIt.Data.Context;
 using FeedIt.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,20 +15,24 @@ namespace FeedIt.Data.Repositories
         {
         }
 
-        public async Task<bool> IsExist(string login)
+        public Task<bool> IsExist(string login)
         {
-            return await DbSet.AnyAsync(entry => entry.Login == login);
+            return DbSet
+                .AnyAsync(entry => entry.Login == login);
         }
 
         public Task<User> GetByLogin(string login)
         {
-            return DbSet.FirstOrDefaultAsync(item =>
-                item.Login == login);
+            return DbSet
+                .FirstOrDefaultAsync(user => user.Login == login);
         }
 
-        public async Task<string> GetUserPublicName(Guid id)
+        public Task<User> GetIncludedArticles(Guid id)
         {
-            return (await Get(id)).PublicName;
+            return DbSet
+                .Where(user => user.Id == id)
+                .Include(user => user.Articles)
+                .FirstOrDefaultAsync();
         }
     }
 }

@@ -2,7 +2,6 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
-using FeedIt.Data.Context;
 using FeedIt.Data.Models;
 using Microsoft.AspNetCore.Http;
 
@@ -23,5 +22,7 @@ namespace FeedIt.UI.ViewModels.Feed
         public string ArticleId { get; set; }
         
         public bool IsPublic { get; set; }
+        
+        public string BackUrl { get; set; }
     }
 }

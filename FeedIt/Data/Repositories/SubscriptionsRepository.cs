@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using FeedIt.Data.Context;
 using FeedIt.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Extensions.Internal;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace FeedIt.Data.Repositories
 {
@@ -17,47 +17,47 @@ namespace FeedIt.Data.Repositories
 
         public override DbSet<Subscription> DbSet => Context.Subscriptions;
 
-        public async Task<Subscription> Get(Guid subscriberId, Guid subscriptionTargetId)
+        public Task<Subscription> Get(Guid subscriberId, Guid subscriptionTargetId)
         {
-            var result = await DbSet.FirstOrDefaultAsync(sub =>
-                sub.SubscriberId == subscriberId && sub.SubscriptionTargetId == subscriptionTargetId);
-            result.IsExist = true;
-            return result;
-        }
-
-        public IEnumerable<Subscription> GetSubscriptions(Guid id)
-        {
-            return DbSet.Where(sub => sub.SubscriberId == id).AsEnumerable();
-        }
-
-        public IEnumerable<Subscription> GetSubscribers(Guid id)
-        {
-            return DbSet.Where(sub => sub.SubscriptionTargetId == id).AsEnumerable();
+            return DbSet
+                .FirstOrDefaultAsync(sub =>
+                    sub.SubscriberId == subscriberId && sub.SubscriptionTargetId == subscriptionTargetId);
         }
 
         public async Task Subscribe(Guid subscriberId, Guid subscriptionTargetId)
         {
-            var subscription = new Subscription
+            await Save(new Subscription
             {
                 SubscriberId = subscriberId,
                 SubscriptionTargetId = subscriptionTargetId
-            };
-
-            await Save(subscription);
+            });
         }
 
         public async Task Unsubscribe(Guid subscriberId, Guid subscriptionTargetId)
         {
-            var subscription = await Get(subscriberId, subscriptionTargetId);
-
-            await Delete(subscription);
+            await Delete(await Get(subscriberId, subscriptionTargetId));
         }
 
-        public bool IsUserSubscribed(Guid subscriberId, Guid subscriptionId)
+        public Task<bool> IsUserSubscribed(Guid subscriberId, Guid subscriptionId)
         {
-            var subscriptions = GetSubscriptions(subscriberId);
+            return DbSet
+                .AnyAsync(sub => sub.SubscriberId == subscriberId && sub.SubscriptionTargetId == subscriptionId);
+        }
 
-            return subscriptions.Any(sub => sub.SubscriptionTargetId == subscriptionId);
+        public IIncludableQueryable<Subscription, User> GetSubscriptions(Guid userId)
+        {
+            return DbSet
+                .Where(sub => sub.SubscriberId == userId)
+                .Include(sub => sub.Subscriber)
+                .Include(sub => sub.SubscriptionTarget);
+        }
+
+        public IIncludableQueryable<Subscription, IEnumerable<Article>> GetSubscriptionsIncludedArticles(Guid userId)
+        {
+            return DbSet
+                .Where(sub => sub.SubscriberId == userId)
+                .Include(sub => sub.Subscriber)
+                .ThenInclude(user => user.Articles);
         }
     }
 }
