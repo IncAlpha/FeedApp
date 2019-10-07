@@ -21,15 +21,34 @@ namespace FeedIt.Controllers
         {
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1)
         {
             var currentUserId = GetCurrentUserId();
-            var articles = await _articlesRepository.GetAllFeed(currentUserId).ToListAsync();
+            var query = _articlesRepository.GetAllFeed(currentUserId);
 
-            var model = new HomeFeedViewModel
+            const int itemsAtPage = 10;
+            var count = await query.CountAsync();
+
+            var paginationModel = new PaginationViewModel("Home", "Index", count, page, itemsAtPage);
+
+            if (paginationModel.AnyPages)
             {
-                Articles = articles,
-            };
+                if (paginationModel.TotalPages < page)
+                {
+                    return RedirectToAction("Index", new { page = paginationModel.TotalPages });
+                }
+
+                if (page < 1)
+                    return RedirectToAction("Index", new { page = 1 });
+            }
+
+            var articles = await query
+                .Skip((paginationModel.PageNumber - 1) * itemsAtPage)
+                .Take(itemsAtPage)
+                .ToListAsync();
+
+
+            var model = new HomeFeedViewModel(paginationModel, articles);
             return View(model);
         }
 

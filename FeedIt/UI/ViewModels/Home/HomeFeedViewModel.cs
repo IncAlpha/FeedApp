@@ -6,6 +6,13 @@ namespace FeedIt.UI.ViewModels.Home
 {
     public class HomeFeedViewModel
     {
-        public IEnumerable<Article> Articles { get; set; }
+        public readonly IEnumerable<Article> Articles;
+        public readonly PaginationViewModel Pagination;
+
+        public HomeFeedViewModel(PaginationViewModel pagination, IEnumerable<Article> articles)
+        {
+            Pagination = pagination;
+            Articles = articles;
+        }
     }
 }

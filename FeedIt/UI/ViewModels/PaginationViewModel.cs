@@ -21,12 +21,14 @@ namespace FeedIt.UI.ViewModels
             get { return (PageNumber < TotalPages); }
         }
 
+        public bool AnyPages => TotalPages != 0;
+
         public PaginationViewModel(string controller, string action, int count, int pageNumber, int itemsAtPage)
         {
             Controller = controller;
             Action = action;
             TotalPages = (int) Math.Ceiling(count / (double) itemsAtPage);
-            PageNumber = Math.Min(pageNumber, TotalPages);
+            PageNumber = pageNumber;
         }
     }
 }

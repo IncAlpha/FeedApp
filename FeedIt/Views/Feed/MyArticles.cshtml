@@ -13,7 +13,10 @@
         </a>
     </div>
 
-    @await Html.PartialAsync("_PaginationSection", Model.Pagination)
+    @if (Model.Pagination.AnyPages)
+    {
+        @await Html.PartialAsync("_PaginationSection", Model.Pagination)
+    }
 
     @foreach (var article in Model.Articles)
     {
@@ -59,5 +62,8 @@
         </div>
     }
 
-    @await Html.PartialAsync("_PaginationSection", Model.Pagination);
+    @if (Model.Pagination.AnyPages)
+    {
+        @await Html.PartialAsync("_PaginationSection", Model.Pagination)
+    }
 </div>

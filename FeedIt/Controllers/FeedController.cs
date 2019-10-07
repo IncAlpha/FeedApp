@@ -29,12 +29,16 @@ namespace FeedIt.Controllers
 
             var paginationModel = new PaginationViewModel("Feed", "MyArticles", count, page, itemsAtPage);
 
-            if (paginationModel.TotalPages < page)
+            if (paginationModel.AnyPages)
             {
-                return RedirectToAction("MyArticles", new { page = paginationModel.TotalPages });
+                if (paginationModel.TotalPages < page)
+                {
+                    return RedirectToAction("MyArticles", new { page = paginationModel.TotalPages });
+                }
+
+                if (page < 1)
+                    return RedirectToAction("MyArticles", new { page = 1 });
             }
-            if(page < 1)
-                return RedirectToAction("MyArticles", new { page = 1 });
 
             var articles = await query
                 .OrderByDescending(article => article.CreatedAt)
