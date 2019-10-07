@@ -69,6 +69,7 @@
             <e p="Home" t="Include">
               <e p="HomeFeedViewModel.cs" t="Include" />
             </e>
+            <e p="PaginationViewModel.cs" t="Include" />
             <e p="Subscriptions" t="Include">
               <e p="MySubscriptionsViewModel.cs" t="Include" />
             </e>
@@ -93,6 +94,7 @@
           </e>
           <e p="Shared" t="Include">
             <e p="_Layout.cshtml" t="Include" />
+            <e p="_PaginationSection.cshtml" t="Include" />
             <e p="_ValidationScriptsPartial.cshtml" t="Include" />
             <e p="Error.cshtml" t="Include" />
           </e>

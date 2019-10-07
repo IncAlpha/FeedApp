@@ -6,9 +6,11 @@ namespace FeedIt.UI.ViewModels.Feed
     public class MyArticlesViewModel
     {
         public readonly IEnumerable<Article> Articles;
+        public readonly PaginationViewModel Pagination;
 
-        public MyArticlesViewModel(IEnumerable<Article> articles)
+        public MyArticlesViewModel(PaginationViewModel pagination, IEnumerable<Article> articles)
         {
+            Pagination = pagination;
             Articles = articles;
         }
     }

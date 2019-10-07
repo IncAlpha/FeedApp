@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FeedIt.Data.Models;
 using FeedIt.Data.Repositories;
+using FeedIt.UI.ViewModels;
 using FeedIt.UI.ViewModels.Feed;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,12 +19,32 @@ namespace FeedIt.Controllers
         {
         }
 
-        public async Task<IActionResult> MyArticles()
+        public async Task<IActionResult> MyArticles(int page = 1)
         {
-            var articles = await _articlesRepository.GetByOwner(GetCurrentUserId())
+            var query = _articlesRepository.GetByOwner(GetCurrentUserId());
+
+            var count = await query.CountAsync();
+
+            const int itemsAtPage = 10;
+
+            var paginationModel = new PaginationViewModel("Feed", "MyArticles", count, page, itemsAtPage);
+
+            if (paginationModel.TotalPages < page)
+            {
+                return RedirectToAction("MyArticles", new { page = paginationModel.TotalPages });
+            }
+            if(page < 1)
+                return RedirectToAction("MyArticles", new { page = 1 });
+
+            var articles = await query
                 .OrderByDescending(article => article.CreatedAt)
+                .Skip((paginationModel.PageNumber - 1) * itemsAtPage)
+                .Take(itemsAtPage)
                 .ToListAsync();
-            var model = new MyArticlesViewModel(articles);
+
+
+            var model = new MyArticlesViewModel(paginationModel, articles);
+
             return View(model);
         }
 
@@ -117,7 +138,7 @@ namespace FeedIt.Controllers
             if (!id.HasValue) return NotFound();
 
             var article = await _articlesRepository.GetById(id.Value);
-            
+
             if (GetCurrentUserId() != article.AuthorId) return NotFound();
 
             await _articlesRepository.Delete(article);
