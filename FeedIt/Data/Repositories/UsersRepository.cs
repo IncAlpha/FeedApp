@@ -34,5 +34,14 @@ namespace FeedIt.Data.Repositories
                 .Include(user => user.Articles)
                 .FirstOrDefaultAsync();
         }
+
+        public IQueryable<User> GetPublicPool(Guid currentUserId)
+        {
+            return DbSet
+                .Include(user => user.Articles)
+                .Where(user => user.Articles
+                    .Any(article => article.IsPublic) && user.Id != currentUserId)
+                .Include(user => user.Subscribers);
+        }
     }
 }

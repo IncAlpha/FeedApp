@@ -26,25 +26,22 @@ namespace FeedIt.Controllers
             var currentUserId = GetCurrentUserId();
             var query = _articlesRepository.GetAllFeed(currentUserId);
 
-            const int itemsAtPage = 10;
             var count = await query.CountAsync();
 
-            var paginationModel = new PaginationViewModel("Home", "Index", count, page, itemsAtPage);
+            var paginationModel = new PaginationViewModel("Home", "Index", count, page);
 
-            if (paginationModel.AnyPages)
+            try
             {
-                if (paginationModel.TotalPages < page)
-                {
-                    return RedirectToAction("Index", new { page = paginationModel.TotalPages });
-                }
+                paginationModel.Validate(page);
+            }
+            catch (PaginationOutOfRangeException ex)
+            {
+                page = ex.Negative ? 1 : paginationModel.TotalPages;
 
-                if (page < 1)
-                    return RedirectToAction("Index", new { page = 1 });
+                return RedirectToAction("Index", new { Page = page });
             }
 
-            var articles = await query
-                .Skip((paginationModel.PageNumber - 1) * itemsAtPage)
-                .Take(itemsAtPage)
+            var articles = await paginationModel.GetQuery(query)
                 .ToListAsync();
 
 

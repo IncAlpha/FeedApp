@@ -1,5 +1,9 @@
+using System.Linq;
 using System.Threading.Tasks;
+using FeedIt.Data;
+using FeedIt.Data.Models;
 using FeedIt.Data.Repositories;
+using FeedIt.UI.ViewModels;
 using FeedIt.UI.ViewModels.Subscriptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,6 +29,44 @@ namespace FeedIt.Controllers
             return View(model);
         }
 
+        public async Task<IActionResult> UsersPool(int page = 1, string nameToSearch = "",
+            UserQueryFilters.DegreesOfPopularity popularity = UserQueryFilters.DegreesOfPopularity.Any,
+            UserQueryFilters.ArticleCounts articleCount = UserQueryFilters.ArticleCounts.Any)
+        {
+            var query = _usersRepository.GetPublicPool(GetCurrentUserId());
+
+            var count = await query.CountAsync();
+
+            var paginationModel = new PaginationViewModel("Feed", "MyArticles", count, page);
+
+            try
+            {
+                paginationModel.Validate(page);
+            }
+            catch (PaginationOutOfRangeException ex)
+            {
+                page = ex.Negative ? 1 : paginationModel.TotalPages;
+
+                return RedirectToAction("UsersPool", new { Page = page });
+            }
+
+            var filters = new UserQueryFilters()
+            {
+                NameToSearch = nameToSearch,
+                Popularity = popularity,
+                ArticleCount = articleCount
+            };
+
+            query = filters.BuildQuery(query);
+            
+            var users = await paginationModel.GetQuery(query)
+                .ToListAsync();
+
+            var model = new UsersPoolViewModel(paginationModel, users, filters);
+
+            return View(model);
+        }
+
         public async Task<IActionResult> Subscribe(string subscriptionLogin)
         {
             if (!await _usersRepository.IsExist(subscriptionLogin))
@@ -34,9 +76,10 @@ namespace FeedIt.Controllers
 
             var subscription = await _usersRepository.GetByLogin(subscriptionLogin);
 
-            var subscriptionId = subscription.Id;
+            if (subscription.Id == userId)
+                return NotFound();
 
-            await _subscriptionsRepository.Subscribe(userId, subscriptionId);
+            await _subscriptionsRepository.Subscribe(userId, subscription.Id);
 
             return RedirectToAction("Details", "Account", new { login = subscriptionLogin });
         }

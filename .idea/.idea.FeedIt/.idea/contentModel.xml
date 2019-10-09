@@ -34,11 +34,14 @@
             <e p="SubscriptionsRepository.cs" t="Include" />
             <e p="UsersRepository.cs" t="Include" />
           </e>
+          <e p="UserQueryFilters.cs" t="Include" />
         </e>
         <e p="FeedIt.csproj" t="IncludeRecursive" />
         <e p="Migrations" t="Include">
           <e p="20191005142758_Init.cs" t="Include" />
           <e p="20191005142758_Init.Designer.cs" t="Include" />
+          <e p="20191007192415_CreatedAtToUser.cs" t="Include" />
+          <e p="20191007192415_CreatedAtToUser.Designer.cs" t="Include" />
           <e p="AppDbContextModelSnapshot.cs" t="Include" />
         </e>
         <e p="obj" t="ExcludeRecursive">
@@ -69,9 +72,11 @@
             <e p="Home" t="Include">
               <e p="HomeFeedViewModel.cs" t="Include" />
             </e>
+            <e p="PaginationOutOfRangeException.cs" t="Include" />
             <e p="PaginationViewModel.cs" t="Include" />
             <e p="Subscriptions" t="Include">
               <e p="MySubscriptionsViewModel.cs" t="Include" />
+              <e p="UsersPoolViewModel.cs" t="Include" />
             </e>
           </e>
         </e>
@@ -100,6 +105,7 @@
           </e>
           <e p="Subscriptions" t="Include">
             <e p="MySubscriptions.cshtml" t="Include" />
+            <e p="UsersPool.cshtml" t="Include" />
           </e>
         </e>
         <e p="wwwroot" t="Include">

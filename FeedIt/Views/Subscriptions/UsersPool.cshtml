@@ -1,0 +1,66 @@
+@using FeedIt.Data
+@model UsersPoolViewModel
+@{
+    ViewData["Title"] = "Публичный пул";
+}
+
+<div class="container text-center col-auto">
+    <form
+        asp-controller="Subscriptions" asp-action="UsersPool"
+        method="get"
+        class="form-group">
+        <label for="nameToSearch">По имени: </label>
+        <input
+            asp-for="@Model.Filters.NameToSearch"
+            name="nameToSearch" id="nameToSearch"
+            type="text"/>
+
+        <label for="popularity">Степень популярности: </label>
+        <select
+            asp-for="@Model.Filters.Popularity"
+            name="popularity" id="popularity"
+            class="btn btn-primary dropdown-toggle">
+            @foreach (var (popularity, label) in UserQueryFilters.PopularityLabels)
+            {
+                <option value="@popularity">@label</option>
+            }
+        </select>
+
+        <label for="articleCount">Количество статей: </label>
+        <select
+            asp-for="@Model.Filters.ArticleCount"
+            name="articleCount" id="articleCount"
+            class="btn btn-primary dropdown-toggle">
+            @foreach (var (articleCount, label) in UserQueryFilters.ArticleCountsLabels)
+            {
+                <option value="@articleCount">@label</option>
+            }
+        </select>
+
+        <input
+            class="btn btn-secondary ml-5" type="submit" value="Поиск"/>
+    </form>
+</div>
+
+<div class="container">
+    @foreach (var user in Model.Users)
+    {
+        <div class="container text-left mb-3">
+            <a
+                asp-controller="Account" asp-action="Details" asp-route-login="@user.Login"
+                class="list-group-item list-group-item-action flex-column align-items-start">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">@user.PublicName</h5>
+                    <div>
+                        <small class="text-muted">@user.Login</small>
+                    </div>
+                </div>
+            </a>
+        </div>
+    }
+
+    @if (Model.Pagination.AnyPages)
+    {
+        @await Html.PartialAsync("_PaginationSection", Model.Pagination)
+    }
+</div>

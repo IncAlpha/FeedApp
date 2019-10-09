@@ -6,7 +6,7 @@
 <div class="container">
     @foreach (var sub in Model.Subscriptions)
     {
-        <div class="container text=;eft mb-4">
+        <div class="container text-left mb-4">
             <a
                 asp-controller="Account" asp-action="Details" asp-route-login="@sub.SubscriptionTarget.Login"
                 class="list-group-item list-group-item-action flex-column align-items-start">
@@ -19,4 +19,12 @@
             </a>
         </div>
     }
+
+    <div class="text-center mb-3">
+        <a
+            asp-controller="Subscriptions" asp-action="UsersPool"
+            type="button" class="btn btn-light btn-lg w-25">
+            Найти ещё
+        </a>
+    </div>
 </div>

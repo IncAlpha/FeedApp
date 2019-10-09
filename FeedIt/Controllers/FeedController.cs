@@ -25,25 +25,21 @@ namespace FeedIt.Controllers
 
             var count = await query.CountAsync();
 
-            const int itemsAtPage = 10;
+            var paginationModel = new PaginationViewModel("Feed", "MyArticles", count, page);
 
-            var paginationModel = new PaginationViewModel("Feed", "MyArticles", count, page, itemsAtPage);
-
-            if (paginationModel.AnyPages)
+            try
             {
-                if (paginationModel.TotalPages < page)
-                {
-                    return RedirectToAction("MyArticles", new { page = paginationModel.TotalPages });
-                }
+                paginationModel.Validate(page);
+            }
+            catch (PaginationOutOfRangeException ex)
+            {
+                page = ex.Negative ? 1 : paginationModel.TotalPages;
 
-                if (page < 1)
-                    return RedirectToAction("MyArticles", new { page = 1 });
+                return RedirectToAction("MyArticles", new { Page = page });
             }
 
-            var articles = await query
-                .OrderByDescending(article => article.CreatedAt)
-                .Skip((paginationModel.PageNumber - 1) * itemsAtPage)
-                .Take(itemsAtPage)
+            var articles = await paginationModel.GetQuery(query
+                    .OrderByDescending(article => article.CreatedAt))
                 .ToListAsync();
 
 
